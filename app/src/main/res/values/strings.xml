@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">玩安卓</string>
+    <string name="des_splash">广告图</string>
+    <string name="des_ads_time">5s</string>
+    <string name="author">橙子</string>
+    <string name="next_time">下次再说</string>
+    <string name="now_download">立即下载</string>
+    <string name="version_title">发现新版本</string>
+</resources>
