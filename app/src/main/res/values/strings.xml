@@ -6,4 +6,12 @@
     <string name="next_time">下次再说</string>
     <string name="now_download">立即下载</string>
     <string name="version_title">发现新版本</string>
+    <string name="navi_home">首页</string>
+    <string name="navi_one">知识体系</string>
+    <string name="navi_two">公众号</string>
+    <string name="navi_three">项目</string>
+    <string name="navi_four">我的</string>
+    <string name="search">搜索</string>
+    <string name="shezhi">设置</string>
+    <string name="zhanweizifu">占位字符</string>
 </resources>
