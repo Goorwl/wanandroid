@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.goorwl.wandemo.R;
 import com.goorwl.wandemo.bean.HomeArticleResBean;
-import com.goorwl.wandemo.utils.TimeUtils;
+
+import java.util.List;
 
 public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewholder> implements View.OnClickListener {
 
-    private HomeArticleResBean.DataBean mDataBean;
-    private Context                     mContext;
+    private List<HomeArticleResBean.DataBean.DatasBean> mDataBean;
 
+    private Context     mContext;
     private RvItemClick mRvItemClick;
 
     public void setRvItemClick(RvItemClick rvItemClick) {
@@ -26,18 +27,13 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
         }
     }
 
-    public HomeArticleAdapter(HomeArticleResBean.DataBean dataBean, Context context) {
+    public HomeArticleAdapter(List<HomeArticleResBean.DataBean.DatasBean> dataBean, Context context) {
         mDataBean = dataBean;
         mContext = context;
     }
 
-    public HomeArticleResBean.DataBean getDataBean() {
-        return mDataBean;
-    }
-
-    public void setDataBean(HomeArticleResBean.DataBean dataBean) {
-        mDataBean = null;
-        mDataBean = dataBean;
+    public void loadMoreData(List<HomeArticleResBean.DataBean.DatasBean> dataBean) {
+        mDataBean.addAll(dataBean);
     }
 
     @NonNull
@@ -50,7 +46,7 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
 
     @Override
     public void onBindViewHolder(@NonNull HomeArticleViewholder holder, int position) {
-        HomeArticleResBean.DataBean.DatasBean datasBean = mDataBean.getDatas().get(position);
+        HomeArticleResBean.DataBean.DatasBean datasBean = mDataBean.get(position);
         holder.mTvAuthor.setText(String.valueOf(datasBean.getAuthor()));
         holder.mTvType.setText(String.valueOf(datasBean.getSuperChapterName()));
         holder.mTvTitle.setText(String.valueOf(datasBean.getTitle()));
@@ -59,14 +55,13 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
         } else {
             holder.mTvDing.setVisibility(View.INVISIBLE);
         }
-//        holder.mTvTime.setText(TimeUtils.stampToString(datasBean.getPublishTime()));
         holder.mTvTime.setText(datasBean.getNiceDate());
         holder.itemView.setTag(datasBean.getLink());
     }
 
     @Override
     public int getItemCount() {
-        return mDataBean.getDatas().size();
+        return mDataBean.size();
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.goorwl.utils.LogUtils;
 import com.goorwl.wandemo.R;
 import com.goorwl.wandemo.tool.HostSonicRuntime;
 import com.goorwl.wandemo.tool.SonicJavaScriptInterface;
@@ -46,10 +47,9 @@ public class WebviewActivity extends BaseActivity {
     }
 
     private void initView() {
-
         Intent intent = getIntent();
-        String url = intent.getStringExtra(PARAM_URL);
-        int mode = intent.getIntExtra(PARAM_MODE, -1);
+        String url    = intent.getStringExtra(PARAM_URL);
+        int    mode   = intent.getIntExtra(PARAM_MODE, -1);
         if (TextUtils.isEmpty(url) || -1 == mode) {
             finish();
             return;
@@ -94,7 +94,8 @@ public class WebviewActivity extends BaseActivity {
                 // this only happen when a same sonic session is already running,
                 // u can comment following codes to feedback as a default mode.
                 // throw new UnknownError("create session fail!");
-                Toast.makeText(this, "create sonic session fail!", Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, "create sonic session fail!", Toast.LENGTH_LONG).show();
+                LogUtils.e("mSonicSession", "initView: create sonic session fail!");
             }
         }
 
@@ -103,7 +104,7 @@ public class WebviewActivity extends BaseActivity {
         // runtime、init configs....
         setContentView(R.layout.activity_webview);
 
-        FloatingActionButton btnFab =  findViewById(R.id.btn_refresh);
+        FloatingActionButton btnFab = findViewById(R.id.btn_refresh);
         btnFab.setOnClickListener(view -> {
             if (mSonicSession != null) {
                 mSonicSession.refresh();
@@ -111,7 +112,7 @@ public class WebviewActivity extends BaseActivity {
         });
 
         // init webview
-        WebView webView =findViewById(R.id.webview);
+        WebView webView = findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -166,6 +167,7 @@ public class WebviewActivity extends BaseActivity {
             webView.loadUrl(url);
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

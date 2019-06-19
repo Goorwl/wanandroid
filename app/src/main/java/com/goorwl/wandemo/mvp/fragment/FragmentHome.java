@@ -1,9 +1,7 @@
 package com.goorwl.wandemo.mvp.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,17 +28,19 @@ import com.goorwl.wandemo.R;
 import com.goorwl.wandemo.adapter.HomeArticleAdapter;
 import com.goorwl.wandemo.bean.HomeArticleResBean;
 import com.goorwl.wandemo.bean.HomeBannerResBean;
+import com.goorwl.wandemo.globl.BaseActivity;
 import com.goorwl.wandemo.mvp.imple.FragmentHomeImple;
 import com.goorwl.wandemo.mvp.presenter.FragmentHomePresent;
+import com.goorwl.wandemo.utils.Config;
 import com.goorwl.wandemo.utils.GsonUtils;
 
 import java.util.ArrayList;
 
-public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemClickListener {
+public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemClickListener, Config {
 
     private static final String TAG = "FragmentHome";
 
-    private Activity mActivity;
+    private BaseActivity mActivity;
 
     private static FragmentHome        sSingleTest;
     private        View                mInflate;
@@ -47,7 +49,10 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
     private        SwipeRefreshLayout  mRefreshLayout;
     private        RecyclerView        mRvItem;
 
-    private HomeBannerResBean mHomeBannerResBean;
+    private HomeBannerResBean  mHomeBannerResBean;
+    private int                mCurPage = 0;
+    private HomeArticleAdapter mHomeArticleAdapter;
+    private NestedScrollView   mNestedScrollView;
 
     private FragmentHome() {
     }
@@ -75,7 +80,7 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         sFragmentHomePresent.getBannerInfo();
-        sFragmentHomePresent.getArticle(0);
+        sFragmentHomePresent.getArticle(mCurPage);
         initView();
     }
 
@@ -84,7 +89,7 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
         if (mHomeBannerResBean.getErrorCode() == 0) {
             String url = mHomeBannerResBean.getData().get(position).getUrl();
             if (!TextUtils.isEmpty(url)) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                mActivity.startBroswerActivity(MODE_SONIC, url);
             }
         }
     }
@@ -109,18 +114,35 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void initView() {
         mConvenientBanner = mInflate.findViewById(R.id.convenientBanner);
-//        mRefreshLayout = mInflate.findViewById(R.id.home_swipe);
+        mRefreshLayout = mInflate.findViewById(R.id.home_swipe);
         mRvItem = mInflate.findViewById(R.id.home_rv);
+        mNestedScrollView = mInflate.findViewById(R.id.home_content);
+        mRvItem.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRvItem.setNestedScrollingEnabled(true);
 
-        mRvItem.setNestedScrollingEnabled(false);
+        mRefreshLayout.setRefreshing(true);
+
+        mRefreshLayout.setOnRefreshListener(() -> {
+            mHomeArticleAdapter = null;
+            mCurPage = 0;
+            sFragmentHomePresent.getArticle(mCurPage);
+        });
+
+        mNestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                mRefreshLayout.setRefreshing(true);
+                sFragmentHomePresent.getArticle(mCurPage);
+            }
+        });
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mActivity = getActivity();
+        mActivity = (BaseActivity) getActivity();
     }
 
     @Override
@@ -151,14 +173,20 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
         HomeArticleResBean homeArticleResBean = GsonUtils.getInstance().fromJson(data, HomeArticleResBean.class);
         if (homeArticleResBean.getErrorCode() == 0) {
             HomeArticleResBean.DataBean data1 = homeArticleResBean.getData();
-            mRvItem.setLayoutManager(new LinearLayoutManager(mActivity));
-            HomeArticleAdapter homeArticleAdapter = new HomeArticleAdapter(data1, mActivity);
-            mRvItem.setAdapter(homeArticleAdapter);
-            homeArticleAdapter.setRvItemClick(url -> {
-                Toast.makeText(mActivity, url, Toast.LENGTH_SHORT).show();
+            mCurPage = data1.getCurPage();
+            if (mHomeArticleAdapter == null) {
+                mHomeArticleAdapter = new HomeArticleAdapter(data1.getDatas(), mActivity);
+                mRvItem.setAdapter(mHomeArticleAdapter);
+            } else {
+                mHomeArticleAdapter.loadMoreData(data1.getDatas());
+                mHomeArticleAdapter.notifyDataSetChanged();
+            }
+            mHomeArticleAdapter.setRvItemClick(url -> {
+                mActivity.startBroswerActivity(MODE_SONIC, url);
             });
         } else {
             Toast.makeText(mActivity, "获取首页文章失败。。。", Toast.LENGTH_SHORT).show();
         }
+        mRefreshLayout.setRefreshing(false);
     }
 }

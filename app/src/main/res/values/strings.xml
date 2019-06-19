@@ -14,4 +14,5 @@
     <string name="search">搜索</string>
     <string name="shezhi">设置</string>
     <string name="zhanweizifu">占位字符</string>
+    <string name="empty">暂无数据</string>
 </resources>
