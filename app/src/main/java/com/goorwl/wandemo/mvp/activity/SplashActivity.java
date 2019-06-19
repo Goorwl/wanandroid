@@ -58,6 +58,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityImple 
         Glide.with(mContext).load(imgUrl).into(mIvAd);
         mIvAd.setOnClickListener(v -> {
             Toast.makeText(mContext, "打开广告链接", Toast.LENGTH_SHORT).show();
+            startBroswerActivity(MODE_DEFAULT,"https://www.baidu.com");
         });
         LiveEventBus.get().with(CONSTANT_SPLASH).postValueDelay(1, 3000);
     }
