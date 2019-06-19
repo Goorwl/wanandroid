@@ -121,7 +121,7 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
         mRvItem = mInflate.findViewById(R.id.home_rv);
         mNestedScrollView = mInflate.findViewById(R.id.home_content);
         mRvItem.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRvItem.setNestedScrollingEnabled(true);
+//        mRvItem.setNestedScrollingEnabled(false);
 
         mRefreshLayout.setRefreshing(true);
 

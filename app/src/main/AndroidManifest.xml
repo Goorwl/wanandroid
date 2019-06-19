@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".globl.WebviewActivity"></activity>
+        <activity android:name=".mvp.activity.SearchActivity"></activity>
+        <activity android:name=".globl.WebviewActivity" />
         <activity android:name=".mvp.activity.WebActivity" />
         <activity android:name=".mvp.activity.MainActivity" />
         <activity android:name=".mvp.activity.SplashActivity">

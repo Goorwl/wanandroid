@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity implements MainActivityImple {
         mToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_search:
-                    Toast.makeText(mContext, "搜索界面", Toast.LENGTH_SHORT).show();
+                    jumpActivity(SearchActivity.class);
                     break;
                 case R.id.action_shezhi:
                     Toast.makeText(mContext, "设置界面", Toast.LENGTH_SHORT).show();
