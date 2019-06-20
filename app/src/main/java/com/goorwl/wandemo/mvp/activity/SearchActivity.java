@@ -120,9 +120,13 @@ public class SearchActivity extends BaseActivity implements SearchActivityImple 
     }
 
     public void loadMoreSearch(String data) {
-        if (mHashSet.contains(data)){
+        if (!mHashSet.add(data)) {
             return;
         }
+        //        if (mHashSet.contains(data)){
+        //            return;
+        //        }
+        LogUtils.e(TAG, "loadMoreSearch: 2019年6月20日");
         // 通过代码向FlexboxLayout添加View
         TextView textView = new TextView(this);
         textView.setText(data);
@@ -134,7 +138,8 @@ public class SearchActivity extends BaseActivity implements SearchActivityImple 
             mEt.setSelection(data.length());
         });
         mFlexboxHistory.addView(textView);
-        mHashSet.add(data);
+        mTvEmpty.setVisibility(View.GONE);
+        mFlexboxHistory.setVisibility(View.VISIBLE);
     }
 
     @Override
