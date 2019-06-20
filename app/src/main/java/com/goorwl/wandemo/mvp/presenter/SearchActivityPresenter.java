@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -59,8 +60,38 @@ public class SearchActivityPresenter implements Config {
         });
     }
 
-    public void getHistory(){
+    public void getHistory() {
         String string = SPUtils.getString(SP_WORD_SEARCH_HISTORY, "");
         mImple.loadHistory(string);
+    }
+
+    public void getSearch(String key) {
+        FormBody formBody = new FormBody.Builder()
+                .add("k", key)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(URL_SEARCH)
+                .post(formBody)
+                .build();
+
+        OkHttpUtils.getInstance().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                String string = null;
+                try {
+                    string = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                LogUtils.e(TAG, "onResponse **********: " + string);
+            }
+        });
+
     }
 }
