@@ -1,8 +1,10 @@
 package com.goorwl.wandemo.mvp.activity;
 
-import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,13 +34,20 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
     private int                mCurPage = 0;
     private String             mKey;
     private RecyclerView       mRvItem;
-    private Context            mContext;
+    private BaseActivity       mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private int                mPageCount;
+    private HomeArticleAdapter mArticleAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         setContentView(R.layout.activity_search_res);
         mContext = this;
         initView();
@@ -58,13 +67,20 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
 
         Toolbar toolbar = findViewById(R.id.search_res_toolbar);
 
-        toolbar.setTitle(String.format("\"%s\"的搜索结果", mKey));
-        toolbar.setLogo(R.drawable.search);
+        toolbar.setTitle(String.format("\" %s \" 的搜索结果", mKey));
+        toolbar.setLogo(R.drawable.back_black);
         toolbar.setBackgroundColor(getResources().getColor(R.color.orange));
         getToolbarLogoIcon(toolbar).setOnClickListener(v -> finish());
         mRvItem = findViewById(R.id.search_res_rv);
         mSwipeRefreshLayout = findViewById(R.id.search_res_fresh);
         mSwipeRefreshLayout.setRefreshing(true);
+        mRvItem.setLayoutManager(new LinearLayoutManager(mContext));
+        mRvItem.setAdapter(mArticleAdapter);
+
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mCurPage = 0;
+            mPresenter.getSearch(mKey, mCurPage);
+        });
     }
 
     @Override
@@ -95,13 +111,17 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
                         }
                     }
                 });
-            }else {
+            } else {
                 mSwipeRefreshLayout.setEnabled(false);
             }
-
-            mRvItem.setLayoutManager(new LinearLayoutManager(mContext));
-            HomeArticleAdapter articleAdapter = new HomeArticleAdapter(datas, mContext);
-            mRvItem.setAdapter(articleAdapter);
+            if (mArticleAdapter == null) {
+                mArticleAdapter = new HomeArticleAdapter(datas, mContext);
+                mRvItem.setAdapter(mArticleAdapter);
+            } else {
+                mArticleAdapter.loadMoreData(datas);
+                mArticleAdapter.notifyDataSetChanged();
+            }
+            mArticleAdapter.setRvItemClick(url -> mContext.startBroswerActivity(MODE_SONIC, url));
         } else {
             Toast.makeText(this, searchResBean.getErrorMsg(), Toast.LENGTH_SHORT).show();
             finish();
