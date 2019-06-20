@@ -15,7 +15,7 @@ public interface Config {
     String URL_BANNER  = URL_BASE + "/banner/json";
     String URL_ARTICLE = URL_BASE + "/article/list/";
     String URL_HOTWORD = URL_BASE + "/hotkey/json";
-    String URL_SEARCH  = URL_BASE + "/article/query/0/json";
+    String URL_SEARCH  = URL_BASE + "/article/query/";
 
     String PARAM_URL                     = "param_url";
     String PARAM_MODE                    = "param_mode";
