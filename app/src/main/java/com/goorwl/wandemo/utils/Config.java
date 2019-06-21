@@ -7,6 +7,7 @@ public interface Config {
     String CONSTANT_SPLASH    = "CONSTANT_SPLASH";
     String CONSTANT_SPEARTOR  = "*#*";
     String CONSTANT_JUMP_DATA = "CONSTANT_JUMP_DATA";
+    String CONSTANT_JUMP_DATA_STR = "CONSTANT_JUMP_DATA_STR";
 
     MediaType NET_JSON = MediaType.get("application/json; charset=utf-8");
 
@@ -17,6 +18,7 @@ public interface Config {
     String URL_HOTWORD = URL_BASE + "/hotkey/json";
     String URL_SEARCH  = URL_BASE + "/article/query/";
     String URL_TIXI  = URL_BASE + "/tree/json";
+    String URL_TIXIRES  = URL_BASE + "/article/list/";
 
     String PARAM_URL                     = "param_url";
     String PARAM_MODE                    = "param_mode";

@@ -179,7 +179,6 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
                 mRvItem.setAdapter(mHomeArticleAdapter);
             } else {
                 mHomeArticleAdapter.loadMoreData(data1.getDatas());
-                mHomeArticleAdapter.notifyDataSetChanged();
             }
             mHomeArticleAdapter.setRvItemClick(url -> {
                 mActivity.startBroswerActivity(MODE_SONIC, (String) url);

@@ -1,12 +1,10 @@
 package com.goorwl.wandemo.mvp.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,17 +17,20 @@ import com.goorwl.utils.LogUtils;
 import com.goorwl.wandemo.R;
 import com.goorwl.wandemo.adapter.TixiAdapter;
 import com.goorwl.wandemo.bean.TixiHomeResBean;
+import com.goorwl.wandemo.globl.BaseActivity;
+import com.goorwl.wandemo.mvp.activity.TixiResActivity;
 import com.goorwl.wandemo.mvp.imple.FragmentTwoImple;
 import com.goorwl.wandemo.mvp.presenter.FragmentTwoPresent;
+import com.goorwl.wandemo.utils.Config;
 import com.goorwl.wandemo.utils.GsonUtils;
 
 import java.util.List;
 
-public class FragmentTwo extends Fragment implements FragmentTwoImple {
+public class FragmentTwo extends Fragment implements FragmentTwoImple, Config {
     private static final String TAG = "FragmentTwo";
 
     private static FragmentTwo        sSingleTest;
-    private        Activity           mActivity;
+    private        BaseActivity       mActivity;
     private        View               mInflate;
     private        FragmentTwoPresent mPresent;
     private        RecyclerView       mRvItem;
@@ -77,7 +78,7 @@ public class FragmentTwo extends Fragment implements FragmentTwoImple {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mActivity = getActivity();
+        mActivity = (BaseActivity) getActivity();
     }
 
     @Override
@@ -88,8 +89,11 @@ public class FragmentTwo extends Fragment implements FragmentTwoImple {
 
             TixiAdapter tixiAdapter = new TixiAdapter(mActivity, data1);
             tixiAdapter.setItemOnClick(url -> {
+                Bundle bundle = new Bundle();
+                bundle.putInt(CONSTANT_JUMP_DATA, (Integer) url);
+                bundle.putString(CONSTANT_JUMP_DATA_STR, data);
+                mActivity.jumpActivity(TixiResActivity.class, bundle);
                 LogUtils.e(TAG, "onItemClick: " + url);
-                Toast.makeText(mActivity, "" + url, Toast.LENGTH_SHORT).show();
             });
             mRvItem.setLayoutManager(new LinearLayoutManager(mActivity));
             mRvItem.setAdapter(tixiAdapter);

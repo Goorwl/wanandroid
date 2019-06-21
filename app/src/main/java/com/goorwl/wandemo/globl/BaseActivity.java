@@ -2,12 +2,16 @@ package com.goorwl.wandemo.globl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 import com.goorwl.utils.CoreActivity;
 import com.goorwl.wandemo.tool.SonicJavaScriptInterface;
 import com.goorwl.wandemo.utils.Config;
+
+import java.util.ArrayList;
 
 public class BaseActivity extends CoreActivity implements Config {
 
@@ -28,6 +32,25 @@ public class BaseActivity extends CoreActivity implements Config {
         intent.putExtra(PARAM_URL, DEMO_URL);
         intent.putExtra(PARAM_MODE, mode);
         intent.putExtra(SonicJavaScriptInterface.PARAM_CLICK_TIME, System.currentTimeMillis());
-        startActivityForResult(intent, -1);
+        startActivity(intent);
+    }
+
+    public View getToolbarLogoIcon(Toolbar toolbar) {
+        //check if contentDescription previously was set
+        boolean hadContentDescription = android.text.TextUtils.isEmpty(toolbar.getLogoDescription());
+        String  contentDescription    = String.valueOf(!hadContentDescription ? toolbar.getLogoDescription() : "logoContentDescription");
+        toolbar.setLogoDescription(contentDescription);
+        ArrayList<View> potentialViews = new ArrayList<>();
+        //find the view based on it's content description, set programatically or with android:contentDescription
+        toolbar.findViewsWithText(potentialViews, contentDescription, View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+        //Nav icon is always instantiated at this point because calling setLogoDescription ensures its existence
+        View logoIcon = null;
+        if (potentialViews.size() > 0) {
+            logoIcon = potentialViews.get(0);
+        }
+        //Clear content description if not previously present
+        if (hadContentDescription)
+            toolbar.setLogoDescription(null);
+        return logoIcon;
     }
 }

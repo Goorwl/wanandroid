@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.activity.SearchResActivity"></activity>
+        <activity android:name=".mvp.activity.TixiResActivity"></activity>
+        <activity android:name=".mvp.activity.SearchResActivity" />
         <activity android:name=".mvp.activity.SearchActivity" />
         <activity android:name=".globl.WebviewActivity" />
         <activity android:name=".mvp.activity.WebActivity" />

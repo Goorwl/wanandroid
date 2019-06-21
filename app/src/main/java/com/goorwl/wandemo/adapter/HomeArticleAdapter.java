@@ -22,9 +22,7 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
     private RvItemClick mRvItemClick;
 
     public void setRvItemClick(RvItemClick rvItemClick) {
-        if (mRvItemClick == null) {
-            mRvItemClick = rvItemClick;
-        }
+        mRvItemClick = rvItemClick;
     }
 
     public HomeArticleAdapter(List<HomeArticleResBean.DataBean.DatasBean> dataBean, Context context) {
@@ -34,6 +32,13 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
 
     public void loadMoreData(List<HomeArticleResBean.DataBean.DatasBean> dataBean) {
         mDataBean.addAll(dataBean);
+        notifyDataSetChanged();
+    }
+
+    public void setDataBean(List<HomeArticleResBean.DataBean.DatasBean> dataBean) {
+        mDataBean.clear();
+        mDataBean.addAll(dataBean);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -66,7 +71,9 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
 
     @Override
     public void onClick(View v) {
-        mRvItemClick.onItemClick(v.getTag());
+        if (mRvItemClick != null) {
+            mRvItemClick.onItemClick(v.getTag());
+        }
     }
 }
 

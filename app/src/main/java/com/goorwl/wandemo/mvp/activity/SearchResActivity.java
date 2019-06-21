@@ -22,7 +22,6 @@ import com.goorwl.wandemo.mvp.imple.SearchResActivityImple;
 import com.goorwl.wandemo.mvp.presenter.SearchResActivityPresenter;
 import com.goorwl.wandemo.utils.GsonUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResActivity extends BaseActivity implements SearchResActivityImple {
@@ -69,7 +68,6 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
 
         toolbar.setTitle(String.format("\" %s \" 的搜索结果", mKey));
         toolbar.setLogo(R.drawable.back_black);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.orange));
         getToolbarLogoIcon(toolbar).setOnClickListener(v -> finish());
         mRvItem = findViewById(R.id.search_res_rv);
         mSwipeRefreshLayout = findViewById(R.id.search_res_fresh);
@@ -119,31 +117,11 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
                 mRvItem.setAdapter(mArticleAdapter);
             } else {
                 mArticleAdapter.loadMoreData(datas);
-                mArticleAdapter.notifyDataSetChanged();
             }
             mArticleAdapter.setRvItemClick(url -> mContext.startBroswerActivity(MODE_SONIC, (String) url));
         } else {
             Toast.makeText(this, searchResBean.getErrorMsg(), Toast.LENGTH_SHORT).show();
             finish();
         }
-    }
-
-    public View getToolbarLogoIcon(Toolbar toolbar) {
-        //check if contentDescription previously was set
-        boolean hadContentDescription = android.text.TextUtils.isEmpty(toolbar.getLogoDescription());
-        String  contentDescription    = String.valueOf(!hadContentDescription ? toolbar.getLogoDescription() : "logoContentDescription");
-        toolbar.setLogoDescription(contentDescription);
-        ArrayList<View> potentialViews = new ArrayList<>();
-        //find the view based on it's content description, set programatically or with android:contentDescription
-        toolbar.findViewsWithText(potentialViews, contentDescription, View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
-        //Nav icon is always instantiated at this point because calling setLogoDescription ensures its existence
-        View logoIcon = null;
-        if (potentialViews.size() > 0) {
-            logoIcon = potentialViews.get(0);
-        }
-        //Clear content description if not previously present
-        if (hadContentDescription)
-            toolbar.setLogoDescription(null);
-        return logoIcon;
     }
 }

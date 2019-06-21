@@ -22,9 +22,7 @@ public class TixiAdapter extends RecyclerView.Adapter<TixiViewHolder> implements
     private RvItemClick mItemOnClick;
 
     public void setItemOnClick(RvItemClick itemOnClick) {
-        if (mItemOnClick == null) {
-            mItemOnClick = itemOnClick;
-        }
+        mItemOnClick = itemOnClick;
     }
 
     public TixiAdapter(Context context, List<TixiHomeResBean.DataBean> dataBeans) {
@@ -59,7 +57,9 @@ public class TixiAdapter extends RecyclerView.Adapter<TixiViewHolder> implements
 
     @Override
     public void onClick(View v) {
-        mItemOnClick.onItemClick(v.getTag());
+        if (mItemOnClick != null) {
+            mItemOnClick.onItemClick(v.getTag());
+        }
     }
 }
 
