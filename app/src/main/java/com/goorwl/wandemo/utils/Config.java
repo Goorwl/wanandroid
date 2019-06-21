@@ -16,6 +16,7 @@ public interface Config {
     String URL_ARTICLE = URL_BASE + "/article/list/";
     String URL_HOTWORD = URL_BASE + "/hotkey/json";
     String URL_SEARCH  = URL_BASE + "/article/query/";
+    String URL_TIXI  = URL_BASE + "/tree/json";
 
     String PARAM_URL                     = "param_url";
     String PARAM_MODE                    = "param_mode";

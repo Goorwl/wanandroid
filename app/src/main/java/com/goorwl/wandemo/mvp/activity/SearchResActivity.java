@@ -121,7 +121,7 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
                 mArticleAdapter.loadMoreData(datas);
                 mArticleAdapter.notifyDataSetChanged();
             }
-            mArticleAdapter.setRvItemClick(url -> mContext.startBroswerActivity(MODE_SONIC, url));
+            mArticleAdapter.setRvItemClick(url -> mContext.startBroswerActivity(MODE_SONIC, (String) url));
         } else {
             Toast.makeText(this, searchResBean.getErrorMsg(), Toast.LENGTH_SHORT).show();
             finish();

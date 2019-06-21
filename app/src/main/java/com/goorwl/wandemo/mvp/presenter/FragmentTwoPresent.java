@@ -3,7 +3,7 @@ package com.goorwl.wandemo.mvp.presenter;
 import android.app.Activity;
 
 import com.goorwl.utils.LogUtils;
-import com.goorwl.wandemo.mvp.imple.SearchResActivityImple;
+import com.goorwl.wandemo.mvp.imple.FragmentTwoImple;
 import com.goorwl.wandemo.utils.Config;
 import com.goorwl.wandemo.utils.OkHttpUtils;
 
@@ -11,36 +11,30 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class SearchResActivityPresenter implements Config {
+public class FragmentTwoPresent implements Config {
+    private static final String TAG = "FragmentTwoPresent";
 
-    private static final String TAG = "SearchResActivityPresen";
+    private Activity         mActivity;
+    private FragmentTwoImple mImple;
 
-    private Activity               mActivity;
-    private SearchResActivityImple mImple;
-
-    public SearchResActivityPresenter(Activity activity, SearchResActivityImple imple) {
+    public FragmentTwoPresent(Activity activity, FragmentTwoImple imple) {
         mActivity = activity;
         mImple = imple;
     }
 
-    public void getSearch(String key, int pageIndex) {
-        FormBody formBody = new FormBody.Builder()
-                .add("k", key)
-                .build();
-
+    public void getData() {
         Request request = new Request.Builder()
-                .url(URL_SEARCH + pageIndex + "/json")
-                .post(formBody)
+                .url(URL_TIXI)
                 .build();
 
         OkHttpUtils.getInstance().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                mActivity.runOnUiThread(() -> mImple.loadSearch(NET_ERROR_INFO));
+                LogUtils.e(TAG, "onFailure: " + e.getMessage());
+                mActivity.runOnUiThread(() -> mImple.loadData(NET_ERROR_INFO));
             }
 
             @Override
@@ -52,10 +46,8 @@ public class SearchResActivityPresenter implements Config {
                     e.printStackTrace();
                 }
                 String finalString = string;
-                mActivity.runOnUiThread(() -> mImple.loadSearch(finalString));
+                mActivity.runOnUiThread(() -> mImple.loadData(finalString));
             }
         });
-
     }
-
 }

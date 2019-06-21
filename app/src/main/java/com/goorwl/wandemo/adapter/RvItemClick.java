@@ -1,5 +1,5 @@
 package com.goorwl.wandemo.adapter;
 
 public interface RvItemClick {
-    void onItemClick(String url);
+    void onItemClick(Object url);
 }

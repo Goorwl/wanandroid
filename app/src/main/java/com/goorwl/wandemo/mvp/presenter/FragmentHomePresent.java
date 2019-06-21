@@ -1,5 +1,7 @@
 package com.goorwl.wandemo.mvp.presenter;
 
+import android.app.Activity;
+
 import com.goorwl.utils.LogUtils;
 import com.goorwl.wandemo.mvp.fragment.FragmentHome;
 import com.goorwl.wandemo.mvp.imple.FragmentHomeImple;
@@ -15,11 +17,11 @@ import okhttp3.Response;
 
 public class FragmentHomePresent implements Config {
     private static final String            TAG = "FragmentHomePresent";
-    private              FragmentHome      mFragmentHome;
+    private              Activity      mActivity;
     private              FragmentHomeImple mFragmentHomeImple;
 
-    public FragmentHomePresent(FragmentHome fragmentHome, FragmentHomeImple fragmentHomeImple) {
-        mFragmentHome = fragmentHome;
+    public FragmentHomePresent(Activity activity, FragmentHomeImple fragmentHomeImple) {
+        mActivity = activity;
         mFragmentHomeImple = fragmentHomeImple;
     }
 
@@ -32,13 +34,13 @@ public class FragmentHomePresent implements Config {
         OkHttpUtils.getInstance().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                mActivity.runOnUiThread(() -> mFragmentHomeImple.loadBanner(NET_ERROR_INFO));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String string = response.body().string();
-                mFragmentHome.getActivity().runOnUiThread(() -> {
+                mActivity.runOnUiThread(() -> {
                     LogUtils.e(TAG, "onResponse: getBannerInfo= " + string);
                     mFragmentHomeImple.loadBanner(string);
                 });
@@ -56,13 +58,13 @@ public class FragmentHomePresent implements Config {
         OkHttpUtils.getInstance().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                mActivity.runOnUiThread(() -> mFragmentHomeImple.loadAitcle(NET_ERROR_INFO));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String string = response.body().string();
-                mFragmentHome.getActivity().runOnUiThread(() -> {
+                mActivity.runOnUiThread(() -> {
                     LogUtils.e(TAG, "onResponse: getArticle=" + string);
                     mFragmentHomeImple.loadAitcle(string);
                 });

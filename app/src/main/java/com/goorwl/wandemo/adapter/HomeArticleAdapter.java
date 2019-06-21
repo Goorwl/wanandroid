@@ -66,7 +66,7 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewhold
 
     @Override
     public void onClick(View v) {
-        mRvItemClick.onItemClick((String) v.getTag());
+        mRvItemClick.onItemClick(v.getTag());
     }
 }
 

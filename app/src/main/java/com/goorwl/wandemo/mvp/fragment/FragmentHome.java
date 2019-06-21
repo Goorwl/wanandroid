@@ -72,7 +72,7 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mInflate = LayoutInflater.from(mActivity).inflate(R.layout.fragment_home, container, false);
-        sFragmentHomePresent = new FragmentHomePresent(sSingleTest, sSingleTest);
+        sFragmentHomePresent = new FragmentHomePresent(mActivity, sSingleTest);
         return mInflate;
     }
 
@@ -182,7 +182,7 @@ public class FragmentHome extends Fragment implements FragmentHomeImple, OnItemC
                 mHomeArticleAdapter.notifyDataSetChanged();
             }
             mHomeArticleAdapter.setRvItemClick(url -> {
-                mActivity.startBroswerActivity(MODE_SONIC, url);
+                mActivity.startBroswerActivity(MODE_SONIC, (String) url);
             });
         } else {
             Toast.makeText(mActivity, "获取首页文章失败。。。", Toast.LENGTH_SHORT).show();
