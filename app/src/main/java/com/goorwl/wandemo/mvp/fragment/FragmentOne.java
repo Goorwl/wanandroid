@@ -2,6 +2,7 @@ package com.goorwl.wandemo.mvp.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
     private RecyclerView       mRvItem;
     private int                mCurPage  = 0;
     private int                mPosition = 0;
+    private String             key       = "";
 
     private List<WechatTabResBean.DataBean> mBeans;
     private int                             mPageCount;
@@ -89,8 +91,24 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
 
         mRefreshLayout.setOnRefreshListener(() -> {
             mCurPage = 0;
+            if (mArticleAdapter == null) {
+                return;
+            } else {
+                mArticleAdapter = null;
+            }
+            mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
+        });
+
+        mTvSearch.setOnClickListener(v -> {
+            String s = mEtSearch.getText().toString();
+            if (TextUtils.isEmpty(s)) {
+                return;
+            }
+            key = s;
+            Toast.makeText(mActivity, "" + key, Toast.LENGTH_SHORT).show();
             mArticleAdapter = null;
-            mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage);
+            mCurPage = 0;
+            mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
         });
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -101,7 +119,8 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
                 mPosition = tab.getPosition();
                 mCurPage = 0;
                 mArticleAdapter = null;
-                mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage);
+                key = "";
+                mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
             }
 
             @Override
@@ -130,7 +149,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
             for (int i = 0; i < mBeans.size(); i++) {
                 mTabLayout.addTab(mTabLayout.newTab().setText(mBeans.get(i).getName()));
             }
-            mPresent.getItem(mBeans.get(0).getId(), mCurPage);
+            mPresent.getItem(mBeans.get(0).getId(), mCurPage, key);
         } else {
             Toast.makeText(mActivity, tabResBean.getErrorMsg(), Toast.LENGTH_SHORT).show();
         }
@@ -159,7 +178,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
                                 return;
                             }
                             mRefreshLayout.setRefreshing(true);
-                            mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage);
+                            mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
                         }
                     }
                 });

@@ -1,7 +1,9 @@
 package com.goorwl.wandemo.mvp.presenter;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
+import com.goorwl.utils.LogUtils;
 import com.goorwl.wandemo.mvp.imple.FragmentOneImple;
 import com.goorwl.wandemo.utils.Config;
 import com.goorwl.wandemo.utils.OkHttpUtils;
@@ -14,6 +16,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class FragmentOnePresent implements Config {
+    private static final String TAG = "FragmentOnePresent";
+
     private Activity         mActivity;
     private FragmentOneImple mImple;
 
@@ -48,9 +52,14 @@ public class FragmentOnePresent implements Config {
         });
     }
 
-    public void getItem(int id, int pageIndex) {
+    public void getItem(int id, int pageIndex, String key) {
+        String url = URL_WECHAT_AUTHOR + id + "/" + pageIndex + "/json";
+        if (!TextUtils.isEmpty(key)) {
+            url = URL_WECHAT_AUTHOR + id + "/" + pageIndex + "/json?k=" + key;
+        }
+        LogUtils.e(TAG, "getItem 2019年6月24日: " + url);
         Request request = new Request.Builder()
-                .url(URL_WECHAT_AUTHOR + id + "/" + pageIndex + "/json")
+                .url(url)
                 .build();
 
         OkHttpUtils.getInstance().newCall(request).enqueue(new Callback() {
@@ -69,6 +78,7 @@ public class FragmentOnePresent implements Config {
                     string = NET_ERROR_INFO;
                 }
                 String finalString = string;
+                LogUtils.e(TAG, "onResponse: " + string);
                 mActivity.runOnUiThread(() -> mImple.loadItem(finalString));
             }
         });
