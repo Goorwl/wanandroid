@@ -6,5 +6,6 @@
     <color name="splash_bg">#FF07B4B1</color>
     <color name="white">#FFF</color>
     <color name="red">#f00</color>
+    <color name="bg_color">#707070</color>
     <color name="orange">#E4A340</color>
 </resources>

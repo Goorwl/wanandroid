@@ -44,7 +44,7 @@ public class TixiAdapter extends RecyclerView.Adapter<TixiViewHolder> implements
         List<TixiHomeResBean.DataBean.ChildrenBean> children      = mDataBeans.get(position).getChildren();
         StringBuilder                               stringBuilder = new StringBuilder();
         for (int i = 0; i < children.size(); i++) {
-            stringBuilder.append(children.get(i).getName()).append(" ");
+            stringBuilder.append(children.get(i).getName()).append("  ");
         }
         holder.mTvContent.setText(stringBuilder.toString());
         holder.itemView.setTag(position);

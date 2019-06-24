@@ -19,6 +19,8 @@ public interface Config {
     String URL_SEARCH  = URL_BASE + "/article/query/";
     String URL_TIXI  = URL_BASE + "/tree/json";
     String URL_TIXIRES  = URL_BASE + "/article/list/";
+    String URL_WECHAT_TAB  = URL_BASE + "/wxarticle/chapters/json";
+    String URL_WECHAT_AUTHOR  = URL_BASE + "/wxarticle/list/";
 
     String PARAM_URL                     = "param_url";
     String PARAM_MODE                    = "param_mode";
@@ -28,7 +30,7 @@ public interface Config {
     int    MODE_SONIC                    = 1;
     int    MODE_SONIC_WITH_OFFLINE_CACHE = 2;
 
-    String NET_ERROR_INFO = "{\"errorCode\":0,\"errorMsg\":\"请求数据异常\"}";
+    String NET_ERROR_INFO = "{\"errorCode\":0,\"errorMsg\":\"请求数据异常xxx\"}";
 
     String SP_WORD_SEARCH_HISTORY = "SP_WORD_SEARCH_HISTORY";
 }

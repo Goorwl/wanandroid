@@ -9,7 +9,7 @@
         android:id="@+id/tixires_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/orange"
+        android:background="@color/bg_color"
         android:paddingTop="27dp"
         android:paddingBottom="8dp">
 
