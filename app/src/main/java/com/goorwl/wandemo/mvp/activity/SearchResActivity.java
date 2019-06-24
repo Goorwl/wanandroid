@@ -104,6 +104,9 @@ public class SearchResActivity extends BaseActivity implements SearchResActivity
                             if (mCurPage >= mPageCount) {
                                 return;
                             }
+                            if (mSwipeRefreshLayout.isRefreshing()){
+                                return;
+                            }
                             mSwipeRefreshLayout.setRefreshing(true);
                             mPresenter.getSearch(mKey, mCurPage);
                         }

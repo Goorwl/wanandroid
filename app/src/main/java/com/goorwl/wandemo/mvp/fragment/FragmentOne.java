@@ -179,6 +179,9 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
                             if (mCurPage >= mPageCount) {
                                 return;
                             }
+                            if (mRefreshLayout.isRefreshing()){
+                                return;
+                            }
                             mRefreshLayout.setRefreshing(true);
                             mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
                             LogUtils.e(TAG, "initView: 1127");
