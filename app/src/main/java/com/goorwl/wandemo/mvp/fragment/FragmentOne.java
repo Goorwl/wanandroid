@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
+import com.goorwl.utils.LogUtils;
 import com.goorwl.wandemo.R;
 import com.goorwl.wandemo.adapter.HomeArticleAdapter;
 import com.goorwl.wandemo.bean.HomeArticleResBean;
@@ -31,6 +32,8 @@ import com.goorwl.wandemo.utils.GsonUtils;
 import java.util.List;
 
 public class FragmentOne extends Fragment implements Config, FragmentOneImple {
+    private static final String TAG = "FragmentOne";
+
     private static FragmentOne sSingleTest;
 
     private BaseActivity       mActivity;
@@ -149,7 +152,6 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
             for (int i = 0; i < mBeans.size(); i++) {
                 mTabLayout.addTab(mTabLayout.newTab().setText(mBeans.get(i).getName()));
             }
-            mPresent.getItem(mBeans.get(0).getId(), mCurPage, key);
         } else {
             Toast.makeText(mActivity, tabResBean.getErrorMsg(), Toast.LENGTH_SHORT).show();
         }
@@ -179,6 +181,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
                             }
                             mRefreshLayout.setRefreshing(true);
                             mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
+                            LogUtils.e(TAG, "initView: 1127");
                         }
                     }
                 });
