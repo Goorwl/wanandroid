@@ -120,6 +120,9 @@ public class TixiResActivity extends BaseActivity implements TixiResActivityImpl
                     if (mCurPage >= mPageCount) {
                         return;
                     }
+                    if (mRefreshLayout.isRefreshing()) {
+                        return;
+                    }
                     mRefreshLayout.setRefreshing(true);
                     mPresenter.getData(children.get(mPosition).getId(), mCurPage);
                     isLoadmore = true;

@@ -184,7 +184,6 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
                             }
                             mRefreshLayout.setRefreshing(true);
                             mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
-                            LogUtils.e(TAG, "initView: 1127");
                         }
                     }
                 });
