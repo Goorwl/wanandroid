@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
-import com.goorwl.utils.LogUtils;
 import com.goorwl.wandemo.R;
 import com.goorwl.wandemo.adapter.HomeArticleAdapter;
 import com.goorwl.wandemo.bean.HomeArticleResBean;
@@ -32,8 +31,6 @@ import com.goorwl.wandemo.utils.GsonUtils;
 import java.util.List;
 
 public class FragmentOne extends Fragment implements Config, FragmentOneImple {
-    private static final String TAG = "FragmentOne";
-
     private static FragmentOne sSingleTest;
 
     private BaseActivity       mActivity;
@@ -41,7 +38,6 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
     private FragmentOnePresent mPresent;
     private TabLayout          mTabLayout;
     private EditText           mEtSearch;
-    private TextView           mTvSearch;
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView       mRvItem;
     private int                mCurPage  = 0;
@@ -82,7 +78,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
     private void initView() {
         mTabLayout = mInflate.findViewById(R.id.wechat_tablayout);
         mEtSearch = mInflate.findViewById(R.id.wechat_et_search);
-        mTvSearch = mInflate.findViewById(R.id.wechat_tv_search);
+        TextView tvSearch = mInflate.findViewById(R.id.wechat_tv_search);
         mRefreshLayout = mInflate.findViewById(R.id.wechat_refresh);
         mRvItem = mInflate.findViewById(R.id.wechat_rv_item);
 
@@ -102,7 +98,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
             mPresent.getItem(mBeans.get(mPosition).getId(), mCurPage, key);
         });
 
-        mTvSearch.setOnClickListener(v -> {
+        tvSearch.setOnClickListener(v -> {
             String s = mEtSearch.getText().toString();
             if (TextUtils.isEmpty(s)) {
                 return;
@@ -179,7 +175,7 @@ public class FragmentOne extends Fragment implements Config, FragmentOneImple {
                             if (mCurPage >= mPageCount) {
                                 return;
                             }
-                            if (mRefreshLayout.isRefreshing()){
+                            if (mRefreshLayout.isRefreshing()) {
                                 return;
                             }
                             mRefreshLayout.setRefreshing(true);

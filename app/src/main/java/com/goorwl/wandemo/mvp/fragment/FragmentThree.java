@@ -20,7 +20,6 @@ import com.goorwl.wandemo.adapter.HomeArticleAdapter;
 import com.goorwl.wandemo.bean.HomeArticleResBean;
 import com.goorwl.wandemo.bean.XiangmuTabResBean;
 import com.goorwl.wandemo.globl.BaseActivity;
-import com.goorwl.wandemo.globl.WebviewActivity;
 import com.goorwl.wandemo.mvp.imple.FragmentThreeImple;
 import com.goorwl.wandemo.mvp.presenter.FragmentThreePresenter;
 import com.goorwl.wandemo.utils.Config;
@@ -163,9 +162,7 @@ public class FragmentThree extends Fragment implements Config, FragmentThreeImpl
                 mAdapter.loadMoreData(articleResBean.getData().getDatas());
             }
 
-            mAdapter.setRvItemClick(url -> {
-                mActivity.startBroswerActivity(MODE_SONIC, (String) url);
-            });
+            mAdapter.setRvItemClick(url -> mActivity.startBroswerActivity(MODE_SONIC, (String) url));
         } else {
             Toast.makeText(mActivity, articleResBean.getErrorMsg(), Toast.LENGTH_SHORT).show();
         }
